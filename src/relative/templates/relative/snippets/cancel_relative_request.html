@@ -1,0 +1,38 @@
+
+<script type="text/javascript">
+	
+	function cancelRelativeRequest(id, uiUpdateFunction){
+		payload = {
+			"csrfmiddlewaretoken": "{{ csrf_token }}",
+			"receivers_user_id": id,
+		}
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			url: "{% url 'relative:relative-request-cancel' %}",
+			data: payload,
+			timeout: 5000,
+			success: function(data) {
+				console.log("SUCCESS", data)
+				if(data['response'] == "Relative request canceled."){
+					// ui is updated
+				}
+				else if(data['response'] != null){
+					alert(data['response'])
+				}
+			},
+			error: function(data) {
+				console.error("ERROR...", data)
+				alert("Something went wrong.")
+			},
+			complete: function(data){
+				uiUpdateFunction()
+			}
+		});
+	}
+	
+
+</script>
+
+
+
